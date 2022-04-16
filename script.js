@@ -1,50 +1,105 @@
-const grid = document.querySelector(".gridContainer");
-const userInput = document.getElementById("quantity");
-const resetButton = document.querySelector(".reset")
+const container = document.querySelector('.container')
+const btnBlack = document.createElement('button')
+const btnRgb = document.createElement('button')
+const btnGray = document.createElement('button')
+const btnSize = document.createElement('button')
+const section = document.querySelector('.section');
+const buttonsContainer = document.querySelector('.buttons');
 
-createGrid = () => {
-    for(let i = 0; i < 256; i++){
-        const div = document.createElement("div");
-        div.classList.add("square");
-        grid.appendChild(div);
+window.onload = () => {
+    const boxs = container.querySelectorAll('.box')
+    boxs.forEach(box => box.addEventListener('mouseover', () => {
+        box.style.background = 'black'
+    }))
+}
+
+function createDivs (col, rows) {
+    for(let i = 0; i < (col * rows); i++){
+        const div = document.createElement('div')
+        container.style.gridTemplateColumns = `repeat(${col}, 1fr)`;
+        container.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+        container.appendChild(div).classList.add('box')
     }
-};
+}
 
-updateGrid = () => {
+createDivs(16, 16)
 
-    grid.innerHTML ="";
-    grid.style.setProperty(
-        "grid-template-columns",
-        `repeat(${userInput.value}, 2fr)`
-    );
+function grayColor() { 
+    
+    const boxs = container.querySelectorAll('.box')
+    btnGray.textContent = "GRAY"
+    btnGray.addEventListener('click', () => {
+        boxs.forEach(box => box.addEventListener('mouseover', ()=> {
+            let RNum = Math.floor(Math.random() * 256);
+            let GrayScale = `rgb(${RNum},${RNum},${RNum})`
+            box.style.background = GrayScale;
+        }))
+    })
+    buttonsContainer.appendChild(btnGray).classList.add('btn')
+}
+grayColor()
 
-    grid.style.setProperty(
-        "grid-template-rows",
-        `repeat(${userInput.value}, 2fr)`
-    );
+function rgbColors() {
+    
+    const boxs = container.querySelectorAll('.box')
+    btnRgb.textContent = "RGB"
+    btnRgb.addEventListener('click' ,() => {
+        boxs.forEach(box => box.addEventListener('mouseover', () => {
+            let R = Math.floor(Math.random() * 256);
+            let G = Math.floor(Math.random() * 256);
+            let B = Math.floor(Math.random() * 256);
+            const RGB = `rgb(${R},${G},${B})`;
+            box.style.background = RGB;
+        }))
+    })
+    buttonsContainer.appendChild(btnRgb).classList.add('btn')
+}
+rgbColors()
 
-    for(let i = 0; i < userInput.value * userInput.value; i++) {
-        const div = document.createElement("div");
-        div.classList.add("square");
-        grid.appendChild(div);
-    }
-    console.log(userInput.value);
-};
+function blackColor() {
 
-const square = document.querySelector("div");
-square.addEventListener("mouseover", function(event){
-    event.target.classList.replace("square", "color");
-});
+    const boxs = container.querySelectorAll('.box')
+    btnBlack.textContent = "BLACK"
+    btnBlack.addEventListener('click', function () {
+        boxs.forEach(box => box.addEventListener('mouseover', function() {
+            this.style.background = 'black';
+        }))
+    })
+    buttonsContainer.appendChild(btnBlack).classList.add('btn')
+}
+blackColor()
 
-userInput.addEventListener("click", function(){
-    grid.innerHTML = "";
-    userInput.value = "";
-    grid.style.setProperty("grid-template-columns", `repeat(16, 2fr)`);
-    grid.style.setProperty("grid-template-colums", `repeat(16, 2fr)`);
-    createGrid();
-});
+function reSet() {
+    const boxs = container.querySelectorAll('.box')
+    boxs.forEach(box => {
+        box.remove();
+    })
+}
 
-// createGrid();
+function reSize() {
+    btnSize.textContent = 'GRID SIZE'
+    btnSize.addEventListener('click', () => {
+        let user = prompt('WHAT SIZE DO YOU WANT YOUR GRID TO BE?')
+        if(user === null || user < 1){
+            reSet();
+            createDivs(16, 16);
+            grayColor();
+            rgbColors();
+            blackColor();
+        }else {
+            reSet();
+            createDivs(user, user);
+            grayColor();
+            rgbColors();
+            blackColor();
+        }
+    })
+    buttonsContainer.appendChild(btnSize).classList.add('btn')
+}
+reSize()
+
+
+
 
 
 
