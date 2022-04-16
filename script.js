@@ -31,9 +31,20 @@ updateGrid = () => {
     console.log(userInput.value);
 };
 
+const square = document.querySelector("div");
+square.addEventListener("mouseover", function(event){
+    event.target.classList.replace("square", "color");
+});
 
+userInput.addEventListener("click", function(){
+    grid.innerHTML = "";
+    userInput.value = "";
+    grid.style.setProperty("grid-template-columns", `repeat(16, 2fr)`);
+    grid.style.setProperty("grid-template-colums", `repeat(16, 2fr)`);
+    createGrid();
+});
 
-
+// createGrid();
 
 
 
